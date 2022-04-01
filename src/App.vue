@@ -24,7 +24,7 @@ export default {
     janken() {
       this.computerHand = Math.floor(Math.random() * 3)
       const result = (this.playerHand - this.computerHand + 3) % 3
-      this.message = 'コンピュータは' + this.hands[this.computerHand] + 'を出しました'
+      this.message = 'コンピュータは' + this.hands[this.computerHand] + 'を出しました。'
       if(result == 0) {
         this.message += 'あいこです' 
       } else if(result == 1) {
