@@ -6,6 +6,13 @@
     <p>あなたは{{ hands[playerHand] }}を出そうとしています</p>
     <p><button @click="janken()">ボタン</button></p>
     <p>{{ message }}</p>
+    <ul>
+      <!-- ここのhandは変数 -->
+      <li v-for="(hand, index) in historyData" :key= "index">
+        <!-- indexである必要性はないが、かぶるといけないので、とりあえずindex -->
+        {{ hands[hand.playerHand]}} {{ hands[hand.computerHand] }} {{ hand.judge }}
+      </li>
+    </ul>
   </div>
 </template>
 
@@ -17,21 +24,33 @@ export default {
       message: '',
       hands: ['グー', 'チョキ', 'パー'],
       playerHand: 0,
-      computerHand: 0
+      computerHand: 0,
+      historyData: [
+        { playerHand: '', computerHand: '', judgeMessage: '' }
+      ],
+      judgeMessage: '',
+      judge: ['あいこです', 'コンピュータの勝ちです', 'あなたの勝ちです'],
   }
 },
   methods: {
     janken() {
+
+      // let judgeMessage = ''
       this.computerHand = Math.floor(Math.random() * 3)
       const result = (this.playerHand - this.computerHand + 3) % 3
       this.message = 'コンピュータは' + this.hands[this.computerHand] + 'を出しました。'
       if(result == 0) {
-        this.message += 'あいこです' 
+        this.message += this.judge[0]
+        this.judgeMessage = this.judge[0]
       } else if(result == 1) {
-        this.message += 'コンピュータの勝ちです'
+        this.message += this.judge[1]
+        this.judgeMessage = this.judge[1]
       } else if(result == 2) {
-        this.message += 'あなたの勝ちです'
+        this.message += this.judge[2]
+        this.judgeMessage = this.judge[2]
       }
+      // push内のjudgeは名前、この名前をもとに、v-for内で結果を呼び出している
+      this.historyData.push({ playerHand: this.playerHand, computerHand: this.computerHand, judge: this.judgeMessage })
     }
   }
 }
